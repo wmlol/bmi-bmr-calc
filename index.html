@@ -1,0 +1,188 @@
+
+
+<!doctype html>
+<html lang="en" class="h-100">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+      <meta name="generator" content="Jekyll v3.8.6">
+      <title>BMI / BMR Calculator</title>
+      <link href="css/bootstrap.min.css" rel="stylesheet" >
+      <link href="assets/css/all.css" rel="stylesheet" >
+      <link href="stylesheet.css" rel="stylesheet" >
+      <style>
+         #result, #warning-slot {
+         display: none;
+         }
+      </style>
+      <link href="css/sticky_footer.css" rel="stylesheet">
+   </head>
+   <body class="d-flex flex-column">
+      <main role="main" class="flex-shrink-0">
+         <div class="container">
+            <h1 class="mt-5">BMI / BMR Calculator</h1>
+            <p class="lead">Returns your Body Mass Index & Basal Metabolic Rate</p>
+            <div id="warning-slot"><div class="alert alert-danger" role="alert">
+               Please fill in all of the required fields. 
+             </div></div>
+            <div class="input-group mb-3">
+               <div class="input-group-prepend">
+                  <label class="input-group-text" >System of Measurement</label>
+               </div>
+               <select class="custom-select" id="system" onchange="updatesystem()" >
+                  <option value="Imperial">Imperial</option>
+                  <option value="Metric">Metric</option>
+               </select>
+            </div>
+            <div class="input-group mb-3">
+               <div class="input-group-prepend">
+                  <label class="input-group-text" >Gender</label>
+               </div>
+               <select class="custom-select" id="gender" >
+                  <option value="5">Male</option>
+                  <option value="-161">Female</option>
+               </select>
+            </div>
+            <div class="input-group mb-3">
+               <input type="number" class="form-control" id="age" placeholder="Age" aria-label="Age" aria-describedby="basic-addon2" required>
+            </div>
+            <div class="input-group mb-3">
+               <input type="number" class="form-control" id="weight" placeholder="Weight" aria-label="Weight" aria-describedby="basic-addon2" required>
+               <div class="input-group-append">
+                  <span class="input-group-text" id="weight-measurement-system">lb(s)</span>
+               </div>
+            </div>
+            <div class="form-row">
+               <div class="form-group col-md-6">
+                  <input type="number" class="form-control" id="height-1" placeholder="Height (ft)">
+               </div>
+               <div class="form-group col-md-6">
+                  <input type="number" class="form-control" id="height-2" placeholder="Height (in)" aria-required="true">
+               </div>
+            </div>
+            <div class="input-group mb-3">
+               <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Activity Level</label>
+               </div>
+               <select class="custom-select" id="activity" >
+                  <option value="1200">Sedentary</option>
+                  <option value="1375">Light (1-2 days per week)</option>
+                  <option value="1550">Moderate (3-5 days per week)</option>
+                  <option value="1725">Heavy (6-7 days per week)</option>
+                  <option value="1900">Athlete (2x per day)</option>
+               </select>
+            </div>
+            <button type="button" class="btn btn-primary btn btn-block" onclick="showresults()">Calculate</button>
+         </div>
+         <br>
+         <div id="result">
+
+
+            <div class="container">
+               <div class="card-deck mb-3 text-center">
+                 <div class="card mb-4 shadow-sm">
+                   <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">BMI</h4>
+                   </div>
+                   <div class="card-body">
+                     <h1 class="card-title pricing-card-title" id="bmi-number"> </h1>
+                     <p id="bmi-level"></p>
+                   </div>
+                 </div>
+                 <div class="card mb-4 shadow-sm">
+                   <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">BMR</h4>
+                   </div>
+                   <div class="card-body">
+                     <h1 class="card-title pricing-card-title" id="bmr-result"> </h1>
+                     <p>Maintenance Calories</p>
+                   </div>
+                 </div>
+     
+                   
+                  
+   
+               </div>
+
+ 
+         </div>
+
+      </main>
+
+   </body>
+   <script>
+        function showresults() {
+            var system = document.getElementById("system").value;
+
+            //stats
+            var gender = parseInt(document.getElementById("gender").value);
+            var age = parseInt(document.getElementById("age").value);
+            var activity = parseInt(document.getElementById('activity').value);
+
+            if (system == "Imperial") {
+                var height = (parseInt(document.getElementById("height-1").value) * 12 + parseInt(document.getElementById("height-2").value)) * 2.54;
+                var weight = parseInt(document.getElementById("weight").value) / 2.205;
+            }
+            if (system == "Metric") {
+                var height = parseInt(document.getElementById("height-1").value) * 100 + parseInt(document.getElementById("height-2").value);
+                var weight = parseInt(document.getElementById("weight").value);
+            }
+
+            // is filled?
+            if(age.toString() == "NaN" || weight.toString() == "NaN" || height.toString() == "NaN"){
+               document.getElementById("warning-slot").style.display = "block";
+            }else{
+               document.getElementById("warning-slot").style.display = "none";
+// bmi
+var bmi = (weight / (height * height)) * 10000;
+            if (bmi < 18.5) {
+                var level = "Underweight";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                var level = "Normal";
+            } else if (bmi >= 25 && bmi <= 29.9) {
+                var level = "Overweight";
+            } else if (bmi >= 30) {
+                var level = "Obese";
+            }
+
+
+            // bmr
+            // 10 * weight (kg) + 6.25 * height (cm) – 5 * age (y) + s (kcal / day)
+            var bmr = Math.round(((10 * weight + 6.25 * height - 5 * age + gender) * activity) / 1000);
+
+            //update info
+            document.getElementById("bmi-number").innerHTML = bmi.toFixed(1).toLocaleString();
+            document.getElementById("bmi-level").innerHTML = level;
+            document.getElementById("bmr-result").innerHTML = bmr.toLocaleString();
+
+            document.getElementById("result").style.display = "block";
+            }
+           
+               
+            
+        
+
+            
+        }
+
+        function updatesystem() {
+            var system = document.getElementById("system").value;
+            if (system == "Imperial") {
+                document.getElementById("weight-measurement-system").innerHTML = "lb(s)";
+                document.getElementById("height-1").placeholder = "Height (ft)";
+                document.getElementById("height-2").placeholder = "Height (in)";
+            } else if (system == "Metric") {
+                document.getElementById("weight-measurement-system").innerHTML = "kg(s)";
+                document.getElementById("height-1").placeholder = "Height (m)";
+                document.getElementById("height-2").placeholder = "Height (cm)";
+            }
+        }
+
+        function updatebmr(x){
+
+        }
+   </script>
+</html>
+
