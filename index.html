@@ -1,23 +1,20 @@
 
 
 <!doctype html>
-<html lang="en" class="h-100">
+<html>
    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="description" content="">
-      <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-      <meta name="generator" content="Jekyll v3.8.6">
       <title>BMI / BMR Calculator</title>
-      <link href="css/bootstrap.min.css" rel="stylesheet" >
-      <link href="assets/css/all.css" rel="stylesheet" >
-      <link href="stylesheet.css" rel="stylesheet" >
+      
+      <!-- bootstrap styles -->
+      <link href="bootstrap.min.css" rel="stylesheet" >
+      <link href="all.css" rel="stylesheet" >
+      <link href="sticky_footer.css" rel="stylesheet">
+      
       <style>
          #result, #warning-slot {
          display: none;
          }
       </style>
-      <link href="css/sticky_footer.css" rel="stylesheet">
    </head>
    <body class="d-flex flex-column">
       <main role="main" class="flex-shrink-0">
@@ -100,27 +97,17 @@
                      <p>Maintenance Calories</p>
                    </div>
                  </div>
-     
-                   
-                  
-   
                </div>
-
- 
          </div>
-
       </main>
-
    </body>
    <script>
         function showresults() {
             var system = document.getElementById("system").value;
-
             //stats
             var gender = parseInt(document.getElementById("gender").value);
             var age = parseInt(document.getElementById("age").value);
             var activity = parseInt(document.getElementById('activity').value);
-
             if (system == "Imperial") {
                 var height = (parseInt(document.getElementById("height-1").value) * 12 + parseInt(document.getElementById("height-2").value)) * 2.54;
                 var weight = parseInt(document.getElementById("weight").value) / 2.205;
@@ -129,14 +116,13 @@
                 var height = parseInt(document.getElementById("height-1").value) * 100 + parseInt(document.getElementById("height-2").value);
                 var weight = parseInt(document.getElementById("weight").value);
             }
-
             // is filled?
             if(age.toString() == "NaN" || weight.toString() == "NaN" || height.toString() == "NaN"){
                document.getElementById("warning-slot").style.display = "block";
             }else{
                document.getElementById("warning-slot").style.display = "none";
-// bmi
-var bmi = (weight / (height * height)) * 10000;
+            // bmi
+            var bmi = (weight / (height * height)) * 10000;
             if (bmi < 18.5) {
                 var level = "Underweight";
             } else if (bmi >= 18.5 && bmi <= 24.9) {
@@ -146,27 +132,16 @@ var bmi = (weight / (height * height)) * 10000;
             } else if (bmi >= 30) {
                 var level = "Obese";
             }
-
-
             // bmr
             // 10 * weight (kg) + 6.25 * height (cm) – 5 * age (y) + s (kcal / day)
             var bmr = Math.round(((10 * weight + 6.25 * height - 5 * age + gender) * activity) / 1000);
-
             //update info
             document.getElementById("bmi-number").innerHTML = bmi.toFixed(1).toLocaleString();
             document.getElementById("bmi-level").innerHTML = level;
             document.getElementById("bmr-result").innerHTML = bmr.toLocaleString();
-
             document.getElementById("result").style.display = "block";
             }
-           
-               
-            
-        
-
-            
         }
-
         function updatesystem() {
             var system = document.getElementById("system").value;
             if (system == "Imperial") {
@@ -179,10 +154,5 @@ var bmi = (weight / (height * height)) * 10000;
                 document.getElementById("height-2").placeholder = "Height (cm)";
             }
         }
-
-        function updatebmr(x){
-
-        }
    </script>
 </html>
-
