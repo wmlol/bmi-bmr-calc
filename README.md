@@ -1,6 +1,6 @@
 # bmi-bmr-calc
-Simple BMI &amp; BMR Calculator for my APCSP project (functionality written in JS) 
+BMI & BMR calculator written in JS for my APCSP project
 
-Utilizes [Bootstrap](https://getbootstrap.com/)
+Uses [Bootstrap](https://getbootstrap.com/) framework.
 
 Demo can be accessed [here](https://wmlol.github.io/bmi-bmr-calc/).
